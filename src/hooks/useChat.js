@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef } from 'react'
-import { sendMessage } from '../api/client.js'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { sendMessage, getIncidents } from '../api/client.js'
 
 const SESSION_ID = crypto.randomUUID()
 
@@ -10,18 +10,29 @@ export function useChat(mockReplies) {
   const [error,     setError]     = useState(null)
   const uid = useRef(0)
 
+  // завантажуємо інциденти з Node при старті (GET /incidents)
+  useEffect(() => {
+    getIncidents().then(data => {
+      if (data.incidents?.length) setIncidents(data.incidents)
+    }).catch(() => {})
+  }, [])
+
   const send = useCallback(async (text) => {
     if (!text.trim() || loading) return
     const id = ++uid.current
 
-    setMsgs(prev => [...prev, { id, role: 'user', text, status: 'pending', verdict: null, ts: new Date() }])
+    setMsgs(prev => [...prev, {
+      id, role: 'user', text, status: 'pending', verdict: null, ts: new Date(),
+    }])
     setLoading(true)
     setError(null)
 
     try {
       const data = await sendMessage(SESSION_ID, text, mockReplies)
 
-      setMsgs(prev => prev.map(m => m.id === id ? { ...m, status: data.status, verdict: data.verdict } : m))
+      setMsgs(prev => prev.map(m =>
+        m.id === id ? { ...m, status: data.status, verdict: data.verdict } : m
+      ))
 
       if (data.status === 'clean' && data.reply) {
         setMsgs(prev => [...prev, {
@@ -31,7 +42,9 @@ export function useChat(mockReplies) {
       }
 
       if (data.status !== 'clean') {
-        setIncidents(prev => [{ id, ts: new Date(), status: data.status, ...data.verdict }, ...prev])
+        setIncidents(prev => [{
+          id, ts: new Date(), status: data.status, ...data.verdict,
+        }, ...prev])
       }
     } catch (err) {
       setError(err.message)
@@ -41,5 +54,5 @@ export function useChat(mockReplies) {
     }
   }, [loading, mockReplies])
 
-  return { msgs, incidents, loading, error, send }
+  return { msgs, incidents, loading, error, send, sessionId: SESSION_ID }
 }

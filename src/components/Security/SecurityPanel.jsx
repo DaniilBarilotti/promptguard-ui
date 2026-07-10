@@ -17,6 +17,7 @@ export default function SecurityPanel({ incidents, msgs, onRedTeamAttack }) {
       display: 'flex', flexDirection: 'column', height: '100%',
       borderLeft: '1px solid var(--bd2)', background: 'var(--s1)', overflow: 'hidden',
     }}>
+      {/* хедер */}
       <div style={{
         padding: '12px 16px', borderBottom: '1px solid var(--bd2)',
         display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0,
@@ -37,6 +38,7 @@ export default function SecurityPanel({ incidents, msgs, onRedTeamAttack }) {
         )}
       </div>
 
+      {/* таби */}
       <div style={{ display: 'flex', borderBottom: '1px solid var(--bd2)', flexShrink: 0 }}>
         {tabs.map(t => (
           <button

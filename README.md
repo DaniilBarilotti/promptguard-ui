@@ -15,6 +15,31 @@ npm run dev        # http://localhost:5173
 | `true` (default) | Мок-відповіді, бекенд не потрібен |
 | `false` | Реальні запити до Node-проксі на `VITE_PROXY_URL` |
 
+## Що чекаємо від Node-розробника
+
+Ендпоінти:
+
+```
+POST /api/chat
+GET  /api/incidents?sessionId=...
+```
+
+Контракт відповіді `/api/chat`:
+
+```json
+{
+  "status": "clean | suspicious | blocked",
+  "verdict": {
+    "risk": "none | low | medium | high",
+    "attackType": "direct_injection | indirect_rag | system_prompt_leak | role_play_bypass | obfuscation | payload_splitting",
+    "suspiciousFragment": "string | null",
+    "detectionLevel": 1,
+    "confidence": 0.93
+  },
+  "reply": "string | null"
+}
+```
+
 Якщо Node змінить назви полів або значення enum — оновити:
 - `src/constants/attacks.js` — `ATTACK_NAMES`
 - `src/constants/attacks.js` — `STATUS`

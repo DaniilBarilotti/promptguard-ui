@@ -27,5 +27,5 @@ export function AppProvider({ children }) {
   )
 }
 
-// скорочення щоб не писати useContext(Ctx)
+// скорочення щоб не писати useContext(Ctx) скрізь
 export const useApp = () => useContext(Ctx)

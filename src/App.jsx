@@ -9,16 +9,16 @@ function TopBtn({ onClick, children }) {
   const [pressed, setPressed] = useState(false)
   return (
     <button
-      onClick={() => { setPressed(true); setTimeout(() => setPressed(false), 200); onClick() }}
+      onClick={() => { setPressed(true); setTimeout(() => setPressed(false), 180); onClick() }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        padding: '4px 11px', fontSize: 11.5, fontWeight: 500, cursor: 'pointer',
+        padding: '4px 12px', fontSize: 11.5, fontWeight: 500, cursor: 'pointer',
         borderRadius: 8, border: '1px solid var(--bd)',
-        background: hov ? 'var(--s3)' : 'var(--s2)',
+        background: hov ? 'var(--s3)' : 'transparent',
         color: hov ? 'var(--tx2)' : 'var(--tx3)',
         transition: 'all .15s ease',
-        transform: pressed ? 'scale(.97)' : 'scale(1)',
+        transform: pressed ? 'scale(.96)' : 'scale(1)',
         fontFamily: 'var(--m)', letterSpacing: '.02em',
       }}
     >
@@ -35,43 +35,50 @@ export default function App() {
   function handleAttack(text) { setPrefill(text); send(text) }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', position: 'relative' }}>
 
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '7px 16px', borderBottom: '1px solid var(--bd2)',
-        background: 'var(--s1)', flexShrink: 0,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="bg-blobs" aria-hidden="true">
+        <span className="blob-1" />
+        <span className="blob-2" />
+        <span className="blob-3" />
+      </div>
+
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+
+        {/* топ-бар */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 12,
+          padding: '8px 18px',
+          borderBottom: '1px solid var(--bd2)',
+          background: 'var(--topbar-bg)',
+          backdropFilter: 'blur(16px)',
+          flexShrink: 0,
+        }}>
           <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-.02em', color: 'var(--tx)' }}>
             PromptGuard
           </span>
+
           <span style={{
-            fontSize: 9.5, fontWeight: 500, letterSpacing: '.06em',
-            color: 'var(--blue)', padding: '2px 6px',
-            border: '1px solid var(--blue-bd)', borderRadius: 5,
-            background: 'var(--blue-bg)', textTransform: 'uppercase',
+            fontSize: 11, color: 'var(--tx4)',
+            padding: '3px 10px', border: '1px solid var(--bd)',
+            borderRadius: 999, fontFamily: 'var(--m)', letterSpacing: '.02em',
           }}>
-            beta
+            Gemini · {str.proxyLabel}
           </span>
+
+          <div style={{ display: 'flex', gap: 6, marginLeft: 'auto' }}>
+            <TopBtn onClick={toggleTheme}>{theme === 'dark' ? '☀ Light' : '☾ Dark'}</TopBtn>
+            <TopBtn onClick={toggleLang}>{lang === 'uk' ? 'EN' : 'УК'}</TopBtn>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 6 }}>
-          <TopBtn onClick={toggleTheme}>
-            {theme === 'dark' ? '☀ Light' : '☾ Dark'}
-          </TopBtn>
-          <TopBtn onClick={toggleLang}>
-            {lang === 'uk' ? 'EN' : 'УК'}
-          </TopBtn>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', flex: 1, overflow: 'hidden' }}>
+          <ChatWindow
+            msgs={msgs} loading={loading} error={error} onSend={send}
+            prefill={prefill} onPrefillClear={() => setPrefill('')}
+          />
+          <SecurityPanel incidents={incidents} msgs={msgs} onRedTeamAttack={handleAttack} />
         </div>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', flex: 1, overflow: 'hidden' }}>
-        <ChatWindow
-          msgs={msgs} loading={loading} error={error} onSend={send}
-          prefill={prefill} onPrefillClear={() => setPrefill('')}
-        />
-        <SecurityPanel incidents={incidents} msgs={msgs} onRedTeamAttack={handleAttack} />
       </div>
     </div>
   )
