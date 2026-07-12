@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    // проксіює запити до Node guardrail-gateway
+
     proxy: {
       '/api': 'http://localhost:3000'
     }

@@ -97,7 +97,7 @@ input, button { font-family: inherit; }
 .blob-2 { width: 420px; height: 420px; background: #22c55e; bottom: -80px; right: 40px;  opacity: .045; }
 .blob-3 { width: 320px; height: 320px; background: #ef4444; top: 35%;    right: 310px;  opacity: .035; }
 
-/* світла — значно яскравіші */
+/* світла */
 [data-theme='light'] .blob-1 { background: #3b82f6; opacity: .18; }
 [data-theme='light'] .blob-2 { background: #22c55e; opacity: .15; }
 [data-theme='light'] .blob-3 { background: #f87171; opacity: .12; }

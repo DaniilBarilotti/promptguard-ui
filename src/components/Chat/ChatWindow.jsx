@@ -18,7 +18,6 @@ export default function ChatWindow({ msgs, loading, error, onSend, prefill, onPr
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
 
-      {/* повідомлення — без жодного хедера, він вже у топ-барі App */}
       <div style={{
         flex: 1, overflowY: 'auto',
         padding: '24px 20px',

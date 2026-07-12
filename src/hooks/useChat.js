@@ -1,7 +1,15 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { sendMessage, getIncidents } from '../api/client.js'
 
-const SESSION_ID = crypto.randomUUID()
+// постійний sessionId — зберігається в localStorage між сесіями
+const SESSION_ID = (() => {
+  const key = 'pg-session-id'
+  const existing = localStorage.getItem(key)
+  if (existing) return existing
+  const id = crypto.randomUUID()
+  localStorage.setItem(key, id)
+  return id
+})()
 
 export function useChat(mockReplies) {
   const [msgs,      setMsgs]      = useState([])
@@ -10,7 +18,6 @@ export function useChat(mockReplies) {
   const [error,     setError]     = useState(null)
   const uid = useRef(0)
 
-  // завантажуємо інциденти з Node при старті (GET /incidents)
   useEffect(() => {
     getIncidents().then(data => {
       if (data.incidents?.length) setIncidents(data.incidents)
