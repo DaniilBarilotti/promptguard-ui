@@ -34,7 +34,9 @@ const ATTACK_MAP = {
 }
 
 const SEVERITY_MAP = {
-  low: 'low', medium: 'medium', high: 'high',
+  low: 'low', 
+  medium: 'medium', 
+  high: 'high',
 }
 
 function incidentToVerdict(inc) {
@@ -68,7 +70,7 @@ export async function sendMessage(sessionId, text, mockReplies) {
   if (MOCK) return mockSend(mockReplies)
 
   try {
-    const { data } = await api.post('/', { prompt: text })
+    const { data } = await api.post('/', { sessionId, prompt: text })
     return { status: 'clean', verdict: null, reply: data.response || null }
   } catch (err) {
     const data = err.response?.data
