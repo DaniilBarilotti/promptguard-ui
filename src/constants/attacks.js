@@ -2,8 +2,8 @@
 // значення ключів мають збігатись з ATTACK_MAP в client.js
 export const ATTACK_NAMES = {
   direct_injection:   "Пряма ін'єкція",
-  indirect_rag:       'Непряма (RAG)',
-  role_play_bypass:   'Role-play / Jailbreak',
+  indirect_injection: 'Непряма (RAG)',
+  role_play:          'Role-play / Jailbreak',
   obfuscation:        'Обфускація',
   system_prompt_leak: 'Витік system prompt',
   payload_splitting:  'Payload splitting',

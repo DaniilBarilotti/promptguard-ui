@@ -25,10 +25,10 @@ const api = axios.create({
 
 const ATTACK_MAP = {
   prompt_injection:   'direct_injection',
-  jailbreak:          'role_play_bypass',
-  indirect_injection: 'indirect_rag',
+  jailbreak:          'role_play',
+  indirect_injection: 'indirect_injection',
   obfuscation:        'obfuscation',
-  role_play:          'role_play_bypass',
+  role_play:          'role_play',
   unknown:            'direct_injection',
   none:               null,
 }

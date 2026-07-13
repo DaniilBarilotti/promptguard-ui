@@ -38,10 +38,10 @@ const t = {
     // типи атак
     attacks: {
       direct_injection:   "Пряма ін'єкція",
-      indirect_rag:       'Непряма (RAG)',
-      system_prompt_leak: 'Витік system prompt',
-      role_play_bypass:   'Role-play обхід',
+      indirect_injection: 'Непряма (RAG)',
+      role_play:          'Role-play / Jailbreak',
       obfuscation:        'Обфускація',
+      system_prompt_leak: 'Витік system prompt',
       payload_splitting:  'Payload splitting',
     },
 
@@ -89,10 +89,10 @@ const t = {
 
     attacks: {
       direct_injection:   'Direct injection',
-      indirect_rag:       'Indirect (RAG)',
-      system_prompt_leak: 'System prompt leak',
-      role_play_bypass:   'Role-play bypass',
+      indirect_injection: 'Indirect (RAG)',
+      role_play:          'Role-play / Jailbreak',
       obfuscation:        'Obfuscation',
+      system_prompt_leak: 'System prompt leak',
       payload_splitting:  'Payload splitting',
     },
 
