@@ -25,7 +25,7 @@ npm run dev        # http://localhost:5173
 src/
 ├── App.jsx
 ├── hooks/useChat.js              — стан + виклики API
-├── api/client.js                 — fetch до Node + mock (ВСЯ взаємодія з бекендом тут)
+├── api/client.js                 — axios до Node + mock (ВСЯ взаємодія з бекендом тут)
 ├── constants/attacks.js          — enum статусів, назви атак, red team приклади
 └── components/
     ├── Chat/
