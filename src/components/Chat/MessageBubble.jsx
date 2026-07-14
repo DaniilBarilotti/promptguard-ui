@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { useApp } from '../../ctx/AppContext.jsx'
 import StatusBadge from './StatusBadge.jsx'
 
@@ -77,7 +78,10 @@ export default function MessageBubble({ msg }) {
         fontSize: 13.5, lineHeight: 1.7, color: 'var(--tx)', wordBreak: 'break-word',
         transition: 'border-color .2s',
       }}>
-        <Highlight text={msg.text} frag={v?.suspiciousFragment} />
+        {msg.role === 'assistant'
+          ? <ReactMarkdown>{msg.text}</ReactMarkdown>
+          : <Highlight text={msg.text} frag={v?.suspiciousFragment} />
+        }
 
         {v?.attackType && (
           <div style={{
