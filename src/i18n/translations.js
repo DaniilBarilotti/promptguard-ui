@@ -49,9 +49,6 @@ const t = {
     filterAll: 'Всі',
     filterSus: '⚠ Підозрілі',
     filterBlk: '✕ Заблоковані',
-    filterAll: 'All',
-    filterSus: '⚠ Suspicious',
-    filterBlk: '✕ Blocked',
     mockReplies: [
       'Привіт! Готовий відповідати на питання про кібербезпеку.',
       'Звичайно, ось докладніша інформація...',
@@ -96,9 +93,6 @@ const t = {
       payload_splitting:  'Payload splitting',
     },
 
-    filterAll: 'Всі',
-    filterSus: '⚠ Підозрілі',
-    filterBlk: '✕ Заблоковані',
     filterAll: 'All',
     filterSus: '⚠ Suspicious',
     filterBlk: '✕ Blocked',

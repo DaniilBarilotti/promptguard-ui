@@ -24,18 +24,18 @@ const api = axios.create({
 })
 
 const ATTACK_MAP = {
-  prompt_injection:   'direct_injection',
-  jailbreak:          'role_play',
+  direct_injection:   'direct_injection',
   indirect_injection: 'indirect_injection',
-  obfuscation:        'obfuscation',
+  system_prompt_leak: 'system_prompt_leak',
   role_play:          'role_play',
-  unknown:            'direct_injection',
+  obfuscation:        'obfuscation',
+  payload_splitting:  'payload_splitting',
   none:               null,
 }
 
 const SEVERITY_MAP = {
-  low: 'low', 
-  medium: 'medium', 
+  low: 'low',
+  medium: 'medium',
   high: 'high',
 }
 
@@ -53,7 +53,7 @@ function incidentToVerdict(inc) {
 const mockQueue = [
   { status: 'clean', verdict: null, replyKey: 0 },
   { status: 'blocked', verdict: { risk: 'high', attackType: 'direct_injection', suspiciousFragment: 'ignore previous instructions', detectionLevel: 2, confidence: 0.93 }, replyKey: null },
-  { status: 'suspicious', verdict: { risk: 'medium', attackType: 'role_play_bypass', suspiciousFragment: 'without restrictions', detectionLevel: 1, confidence: 0.71 }, replyKey: null },
+  { status: 'suspicious', verdict: { risk: 'medium', attackType: 'role_play', suspiciousFragment: 'without restrictions', detectionLevel: 1, confidence: 0.71 }, replyKey: null },
   { status: 'clean', verdict: null, replyKey: 1 },
 ]
 let mockIdx = 0
