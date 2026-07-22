@@ -1,41 +1,70 @@
-# PromptGuard — Frontend (`feat/react-chat-ui`)
+# PromptGuard UI
+
+Frontend частина системи виявлення атак типу **prompt injection** на LLM-застосунки.
+
+Розроблено під час виробничої практики у [DevBrother](https://devbrother.com), Харків.
+
+🔗 **[Live Demo]( )** · [Команда](https://github.com/kirataske/prompt-guard)
+
+---
+
+## Що це
+
+PromptGuard — командний проєкт безпеки. Система перехоплює запити до LLM і перевіряє їх на наявність prompt injection перед тим як вони потраплять до моделі.
+
+**Моя частина** — фронтенд: чат-інтерфейс і панель безпеки.
+
+Повна архітектура системи:
+```
+Frontend → Node.js guardrail-proxy → Python detector (3-level ML) → LLM API
+```
+
+---
+
+## Функціонал
+
+- **Чат з LLM** — відображення запитів і відповідей з markdown рендерингом
+- **Статус кожного запиту** — ✓ чистий · ⚠ підозрілий · ✕ заблоковано
+- **Підсвічування** — конкретний фрагмент тексту що спрацював виділяється у повідомленні
+- **Тип атаки** — direct_injection, system_prompt_leak, role_play, obfuscation, payload_splitting, indirect_injection
+- **Лог інцидентів** — фільтри, час, фрагмент, рівень детектора
+- **Red Team режим** — готові приклади всіх типів атак для демо
+- **Темна / світла тема** — зберігається у localStorage
+- **Українська / English** — перемикач мови інтерфейсу
+
+---
 
 ## Запуск
 
 ```bash
+git clone https://github.com/DaniilBarilotti/promptguard-ui
+cd promptguard-ui
 npm install
 cp .env.example .env
-npm run dev        # http://localhost:5173
+npm run dev
 ```
 
-## Режими
+Відкрийте [http://localhost:5173](http://localhost:5173)
 
-| `VITE_USE_MOCK` | Що відбувається |
-|---|---|
-| `true` (default) | Мок-відповіді, бекенд не потрібен |
-| `false` | Реальні запити до Node-проксі на `VITE_PROXY_URL` |
+За замовчуванням `VITE_USE_MOCK=true` — працює без бекенду.
 
-Якщо Node змінить назви полів або значення enum — оновити:
-- `src/constants/attacks.js` — `ATTACK_NAMES`
-- `src/constants/attacks.js` — `STATUS`
+### Підключення до реального API
 
-## Структура
-
+```env
+VITE_USE_MOCK=false
+VITE_PROXY_URL=http://localhost:3000
 ```
-src/
-├── App.jsx
-├── hooks/useChat.js              — стан + виклики API
-├── api/client.js                 — axios до Node + mock (ВСЯ взаємодія з бекендом тут)
-├── constants/attacks.js          — enum статусів, назви атак, red team приклади
-└── components/
-    ├── Chat/
-    │   ├── ChatWindow.jsx        — список повідомлень
-    │   ├── MessageBubble.jsx     — бульбашка + підсвічування фрагмента (ФФ-2, ФФ-3)
-    │   ├── ChatInput.jsx         — поле вводу
-    │   └── StatusBadge.jsx       — бейдж clean/suspicious/blocked
-    ├── Security/
-    │   ├── SecurityPanel.jsx     — обгортка з табами
-    │   └── IncidentLog.jsx       — лічильники + лог інцидентів (ФФ-4)
-    └── RedTeam/
-        └── RedTeamPanel.jsx      — готові атаки для демо (ФФ-5)
-```
+
+---
+
+## Стек
+
+`React 18` · `Vite` · `axios` · `react-markdown` · `CSS Custom Properties`
+
+---
+
+## Пов'язані репозиторії
+
+- [Node.js guardrail-proxy](https://github.com/kirataske/prompt-guard/tree/feat/node-proxy)
+- [Python ML detector](https://github.com/kirataske/prompt-guard/tree/feat/python-detector)
+
