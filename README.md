@@ -4,7 +4,7 @@ Frontend частина системи виявлення атак типу **pr
 
 Розроблено під час виробничої практики у [DevBrother](https://devbrother.com), Харків.
 
-🔗 **[Live Demo](promptguard-ui.vercel.app)** · [Команда](https://github.com/kirataske/prompt-guard)
+🔗 **[Live Demo](https://promptguard-ui.vercel.app)** · [Команда](https://github.com/kirataske/prompt-guard)
 
 ---
 
