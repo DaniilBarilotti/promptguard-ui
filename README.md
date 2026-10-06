@@ -1,70 +1,57 @@
 # PromptGuard UI
 
-Frontend частина системи виявлення атак типу **prompt injection** на LLM-застосунки.
+A React chat interface and incident dashboard for an LLM guardrail system.
 
-Розроблено під час виробничої практики у [DevBrother](https://devbrother.com), Харків.
+[Demo](https://promptguard-ui.vercel.app) · [Team repository](https://github.com/kirataske/prompt-guard) · [Portfolio](https://daniilbarilotti.github.io/Portfolio/)
 
-🔗 **[Live Demo](https://promptguard-ui.vercel.app)** · [Команда](https://github.com/kirataske/prompt-guard)
+## Project context and contribution
 
----
+The existing project documents development during a DevBrother internship. This repository contains the frontend: chat messages, request verdicts, suspicious-fragment highlighting, incident views, example prompts and API integration. The Node proxy and Python detector belong to the separate team repository; they are not implemented here.
 
-## Що це
+## Features
 
-PromptGuard — командний проєкт безпеки. Система перехоплює запити до LLM і перевіряє їх на наявність prompt injection перед тим як вони потраплять до моделі.
+- Markdown rendering for chat responses.
+- Clean, suspicious and blocked request states.
+- Attack metadata and highlighted fragments.
+- Session incident view and predefined red-team examples.
+- English / Ukrainian interface and light / dark themes.
 
-**Моя частина** — фронтенд: чат-інтерфейс і панель безпеки.
-
-Повна архітектура системи:
-```
-Frontend → Node.js guardrail-proxy → Python detector (3-level ML) → LLM API
-```
-
----
-
-## Функціонал
-
-- **Чат з LLM** — відображення запитів і відповідей з markdown рендерингом
-- **Статус кожного запиту** — ✓ чистий · ⚠ підозрілий · ✕ заблоковано
-- **Підсвічування** — конкретний фрагмент тексту що спрацював виділяється у повідомленні
-- **Тип атаки** — direct_injection, system_prompt_leak, role_play, obfuscation, payload_splitting, indirect_injection
-- **Лог інцидентів** — фільтри, час, фрагмент, рівень детектора
-- **Red Team режим** — готові приклади всіх типів атак для демо
-- **Темна / світла тема** — зберігається у localStorage
-- **Українська / English** — перемикач мови інтерфейсу
-
----
-
-## Запуск
+## Run locally
 
 ```bash
-git clone https://github.com/DaniilBarilotti/promptguard-ui
+git clone https://github.com/DaniilBarilotti/promptguard-ui.git
 cd promptguard-ui
-npm install
+npm ci
 cp .env.example .env
 npm run dev
 ```
 
-Відкрийте [http://localhost:5173](http://localhost:5173)
+The app uses React 18, Vite, axios, react-markdown and CSS custom properties. `npm run build` creates a production bundle.
 
-За замовчуванням `VITE_USE_MOCK=true` — працює без бекенду.
+## Demo versus connected mode
 
-### Підключення до реального API
+`VITE_USE_MOCK=true` runs without a backend. Mock replies cycle through predefined verdicts **independently of the submitted prompt**. They demonstrate UI states; they do not detect attacks, measure confidence or provide real security protection.
+
+To connect the separate proxy:
 
 ```env
 VITE_USE_MOCK=false
 VITE_PROXY_URL=http://localhost:3000
 ```
 
----
+Frontend environment variables are public. Do not put secrets or provider API keys in them.
 
-## Стек
+## API contract
 
-`React 18` · `Vite` · `axios` · `react-markdown` · `CSS Custom Properties`
+| Request | Expected behaviour |
+| --- | --- |
+| `POST /` with `{ sessionId, prompt }` | Successful response uses `{ status: "ok", response }` |
+| HTTP 403, `status: injection_detected` | Display `incident.verdict`, severity, attack type and segment |
+| HTTP 429 | Display a rate-limit error |
+| `GET /incidents` | Map returned incidents to dashboard items |
 
----
+`src/api/client.js` normalises proxy responses. `src/hooks/useChat.js` manages chat state; `src/components/` separates chat, security and red-team presentation.
 
-## Пов'язані репозиторії
+## Limitations
 
-- [Node.js guardrail-proxy](https://github.com/kirataske/prompt-guard/tree/feat/node-proxy)
-- [Python ML detector](https://github.com/kirataske/prompt-guard/tree/feat/python-detector)
-
+Backend enforcement is essential; frontend display is not a security boundary. Real-mode incident loading currently returns an empty array on failure, so an unavailable API can look like an empty incident log. The repository does not establish detector accuracy or production readiness.
